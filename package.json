@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/learn01/tiltBrushDesignChallenge#readme",
   "dependencies": {
-    "chokidar": "^1.5.1"
+    "chokidar": "^1.5.1",
+    "watch": "^0.18.0"
   }
 }
