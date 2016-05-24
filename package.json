@@ -1,0 +1,19 @@
+{
+  "name": "tiltbrush-design-challange",
+  "version": "0.0.1",
+  "description": "Automate workflow of saving and pushing out to social media",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/learn01/tiltBrushDesignChallenge.git"
+  },
+  "author": "Willie Nelson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/learn01/tiltBrushDesignChallenge/issues"
+  },
+  "homepage": "https://github.com/learn01/tiltBrushDesignChallenge#readme"
+}
