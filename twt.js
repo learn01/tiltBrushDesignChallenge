@@ -7,7 +7,7 @@ let Twitter = require('twitter');
 
 
 let currentUserWindows = process.env['USERPROFILE'];
-let tiltBrushDirectory = '\\Documents\\tmp';
+let tiltBrushDirectory = '\\Documents\\Tilt Brush\\Snapshots';
 let backupDirectory = '\\Documents\\tiltBrushBackup'
 
 // Twitter Setup
@@ -31,7 +31,7 @@ let twitterHandle = argv.t;
 
 // Initialization
 
-let twitterMessage = `Realize your imagination @${twitterHandle} .`
+let twitterMessage = `Realize your imagination @${twitterHandle}.`
 // debug
 console.log(twitterMessage);
 
@@ -46,9 +46,9 @@ fse.ensureDir(backupPathUser, (err) => {
   console.log("creating user directory") // => null
   // dir has now been created, including the directory it is to be placed in
 })
-console.log(backupPathUser);
+// console.log(backupPathUser);
 
-console.log("Reading missles");
+// console.log("Reading missles");
 
 watch.createMonitor(workingPath, (monitor) =>
     monitor.on("created", (filePath, stat) => {
