@@ -1,10 +1,34 @@
-let path = require('path');
-let fse = require('fs-extra');
-let watch = require('watch');
-let argv = require('minimist')(process.argv.slice(2));
+const path = require('path');
+const fse = require('fs-extra');
+const watch = require('watch');
+const argv = require('minimist')(process.argv.slice(2));
+const Chance = require('chance'),
+      chance = new Chance();
 
-let Twitter = require('twitter');
+const Twitter = require('twitter');
 
+const wordList = 
+  ["Colada",
+   "Palm Tree",
+   "Traffic",
+   "Croqueta",
+   "Hurricane",
+   "Panther",
+   "Dolphin",
+   "Manitee",
+   "Flamingo",
+   "Ice Cream",
+   "Seaweed",
+   "Mahi-mahi",
+   "Boat",
+   "Mango",
+   "305",
+   "Party",
+   "Coconut",
+   "Congas"];
+
+let randomizedList = chance.pickset(wordList, 3) 
+let [firstWord, secondWord, thirdWord] = randomizedList;
 
 let currentUserWindows = process.env['USERPROFILE'];
 let tiltBrushDirectory = '\\Documents\\Tilt Brush\\Snapshots';
@@ -19,25 +43,25 @@ let client = new Twitter({
 });
 
 // Command line args setup
-if (argv.n === undefined || argv.e === undefined || argv.t === undefined) {
+if (argv.n === undefined || argv.t === undefined) {
   console.log('Please input all the arguements:') 
-  console.log('-e for email, -n for name, and -t for twitter handle')
+  console.log('-n for name, and -t for twitter handle')
   return false
 }
 let firstName = argv.n;
-let email = argv.e;
+// let email = argv.e;
 let twitterHandle = argv.t;
 // console.log(argv)
 
 // Initialization
-
-let twitterMessage = `Realize your imagination @${twitterHandle}.`
+// let twitterMessage = `#tiltbrush Design Challenge with @${twitterHandle} drawing ${firstWord}, ${secondWord}, ${thirdWord} at #bootenany.`
+let twitterMessage = `#tiltbrush Design Challenge with @${twitterHandle} drawing ${firstWord}, ${secondWord}, ${thirdWord} in 5 minutes.`
 // debug
-console.log(twitterMessage);
+// console.log(twitterMessage);
 
 // debug
 let workingPath = `${currentUserWindows}${tiltBrushDirectory}`;
-console.log(workingPath)
+// console.log(workingPath)
 let backupPath = `${currentUserWindows}${backupDirectory}`;
 let backupPathUser = `${backupPath}\\${argv.n}`;
 
