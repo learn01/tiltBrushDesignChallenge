@@ -6,8 +6,13 @@ const Chance = require('chance'),
       chance = new Chance();
 
 const Twitter = require('twitter');
+const easyimg = require('easyimage');
+const nodemailer = require('nodemailer');
 
-const wordList = 
+// create reusable transporter object using the default SMTP transport
+//const transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+
+const wordList =
   ["Colada",
    "Palm Tree",
    "Traffic",
@@ -27,8 +32,8 @@ const wordList =
    "Coconut",
    "Congas"];
 
-let randomizedList = chance.pickset(wordList, 3) 
-let [firstWord, secondWord, thirdWord] = randomizedList;
+//let randomizedList = chance.pickset(wordList, 3)
+//let [firstWord, secondWord, thirdWord] = randomizedList;
 
 let currentUserWindows = process.env['USERPROFILE'];
 let tiltBrushDirectory = '\\Documents\\Tilt Brush\\Snapshots';
@@ -43,21 +48,37 @@ let client = new Twitter({
 });
 
 // Command line args setup
-if (argv.n === undefined || argv.t === undefined) {
-  console.log('Please input all the arguements:') 
-  console.log('-n for name, and -t for twitter handle')
+if (argv.n === undefined || argv.e === undefined) {
+  console.log('Please input all the arguments:')
+  console.log('-n for name, and -e for email')
   return false
 }
 let firstName = argv.n;
-// let email = argv.e;
-let twitterHandle = argv.t;
+let email = argv.e;
+//let twitterHandle = argv.t;
 // console.log(argv)
 
+// setup e-mail data with unicode symbols
+//var mailOptions = {
+//    from: '"Fred Foo 👥" <foo@blurdybloop.com>', // sender address
+//    to: email , // list of receivers
+//    subject: '#BecksUrbanCanvas✔', // Subject line
+//    html: '<b>Hello world 🐴</b>' // html body
+//};
+
+// send mail with defined transport object
+//transporter.sendMail(mailOptions, function(error, info){
+//    if(error){
+//        return console.log(error);
+//    }
+//    console.log('Message sent: ' + info.response);
+//});
+
 // Initialization
-// let twitterMessage = `#tiltbrush Design Challenge with @${twitterHandle} drawing ${firstWord}, ${secondWord}, ${thirdWord} at #bootenany.`
-let twitterMessage = `#tiltbrush Design Challenge with @${twitterHandle} drawing ${firstWord}, ${secondWord}, ${thirdWord} in 5 minutes.`
+
+let consoleTestMessage = `#beckurbancanvas Design Challenge with ${email}.`
 // debug
-// console.log(twitterMessage);
+console.log(consoleTestMessage);
 
 // debug
 let workingPath = `${currentUserWindows}${tiltBrushDirectory}`;
@@ -74,41 +95,21 @@ fse.ensureDir(backupPathUser, (err) => {
 
 // console.log("Reading missles");
 
-watch.createMonitor(workingPath, (monitor) =>
-    monitor.on("created", (filePath, stat) => {
-      
-      
-      
-      // Send through twitter
-      let data = require('fs').readFileSync(filePath);
-      client.post('media/upload', {media: data}, (error, media, response) => {
-        if (!error) {
-          // Lets tweet it
-          let status = {
-            status: twitterMessage,
-            media_ids: media.media_id_string // Pass the media id string
-          }
-          // Post to twitter
-          client.post('statuses/update', status, (error, tweet, response) => {
-            if (!error) {
-              console.log(tweet);
-            }
-          });
+let becksHash = 'BecksKey.png';
+let becksKey = 'BecksKey.png';
+let testImage = 'image.jpg';
 
-        }
-      });
-      
-      
-      // Backup files to directory subsystem
-      let currentFileSrc = path.parse(filePath);
-      let backupLocation = backupPathUser + '\\' + currentFileSrc.base;
-      // console.log(backupLocation)
-      fse.move(filePath, backupLocation, (err) => {
-        if (err) return console.error(err)
-        console.log(`Successfully moved ${currentFileSrc.base} to ${backupLocation}`)
-      });
-      // **************************************
-      
-    }));
-        
-
+//cropping image for watermark
+easyimg.rescrop({
+     src: testImage, dst: 'testEdited.jpg',
+     width:500, height:500,
+     cropwidth:300, cropheight:300,
+     x:0, y:0
+  }).then(
+  function(image) {
+     console.log('Resized and cropped: ' + image.width + ' x ' + image.height);
+  },
+  function (err) {
+    console.log(err);
+  }
+);
