@@ -97,8 +97,6 @@ fse.ensureDir(backupPathUser, (err) => {
 
 // console.log("Reading missles");
 
-let becksHash = 'BecksKey.png';
-let becksKey = 'BecksKey.png';
 let testImage = 'test.png';
 
 // crop image
@@ -118,16 +116,6 @@ easyimg.rescrop({
 
 //watermark image
 
-//gm('testEdited.jpg')
-//  .composite('BecksKey.png')
-//  .gravity('SouthEast')
-//  .write('testEditedWM.jpg', (err) => console.log(err));
-
-//  gm('testEdited.jpg')
-//    .composite('BUCHash.png')
-//    .gravity('SouthWest')
-//    .write('testEditedWM2.jpg', (err) => console.log(err));
-
 gm('testEdited.png')
  .draw(['image Over 0,700,0,0 "watermark.png"'])
  .write('testEditedWM.png', function(e){
@@ -135,8 +123,8 @@ gm('testEdited.png')
 });
 
 
-//watch.createMonitor(workingPath, (monitor) =>
-  //  monitor.on("created", (filePath, stat) => {
+watch.createMonitor(workingPath, (monitor) =>
+    monitor.on("created", (filePath, stat) => {
 
 
       // Send through twitter
@@ -160,17 +148,38 @@ gm('testEdited.png')
 
 
       // Backup files to directory subsystem
-      //let currentFileSrc = path.parse(filePath);
-      //let backupLocation = backupPathUser + '\\' + currentFileSrc.base;
-      // console.log(backupLocation)
-      //fse.move(filePath, backupLocation, (err) => {
-      //  if (err) return console.error(err)
-      //  console.log(`Successfully moved ${currentFileSrc.base} to ${backupLocation}`)
-      //});
+      let currentFileSrc = path.parse(filePath);
+      let backupLocation = backupPathUser + '\\' + currentFileSrc.base;
+       console.log(backupLocation)
+      fse.move(filePath, backupLocation, (err) => {
+        if (err) return console.error(err)
+        console.log(`Successfully moved ${currentFileSrc.base} to ${backupLocation}`)
+      });
       // **************************************
 
-      //cropping image for watermark
-    //  let croppedImage
+      // crop image
+      easyimg.rescrop({
+           src: testImage, dst: 'testEdited.png',
+           width:1920, height:1080,
+           cropwidth:800, cropheight:800,
+           x:0, y:0
+        }).then(
+        function(image) {
+           console.log('Resized and cropped: ' + image.width + ' x ' + image.height);
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
+
+      //watermark image
+
+      gm('testEdited.png')
+       .draw(['image Over 0,700,0,0 "watermark.png"'])
+       .write('testEditedWM.png', function(e){
+         console.log(e||'done'); // What would you like to do here?
+      });
+
 
 
     //}));
