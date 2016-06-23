@@ -51,7 +51,7 @@ app.listen(8080);
 
 let currentUserWindows = process.env['USERPROFILE'];
 let tiltBrushDirectory = '\\Documents\\Tilt Brush\\Snapshots';
-let backupDirectory = '\\Documents\\tiltBrushBackup'
+let backupDirectory = '\\Documents\\tiltBrushBackup';
 
 // Twitter Setup
 let client = new Twitter({
@@ -73,67 +73,65 @@ let email = argv.e;
 // console.log(argv)
 
 // setup e-mail data with unicode symbols
-var mailOptions = {
+/*var mailOptions = {
     from: '"Tilt Brush @ Becks Urban Canvas" <becksurbancanvasvr@gmail.com>', // sender address
     to: email , // list of receivers
     subject: 'Share Your #BecksUrbanCanvas', // Subject line
-    html: mail.html // html body
-//};
+    html: ' <html>
+              <head>
+                <meta charset="UTF-8">
+                <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" >
+                <style>
+                  body { padding-top:50px; }
+                </style>
+              </head>
+              <body>
+                <div class="container" style="background-color:black;">
+                  <div class="jumbotron">
+                    <img />
+                    <h1 style="font-color:white;">Share Your Urban Canvas with the World!</h1>
+                    <img />
+                    <h2>Get Social!</h2>
+                    <row>
+                      <a href="https://instagram.com/Becksbeer"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                      <a href="https://facebook.com/Becksbeer"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+                    </row>
+                  </div>
+                </div>
+              </body>
+            </html>' // html body
+};*/
 
+/*
 // send mail with defined transport object
 transporter.sendMail(mailOptions, function(error, info){
-//    if(error){
-//        return console.log(error);
-//    }
-//    console.log('Message sent: ' + info.response);
-//});
+   if(error){
+        return console.log(error);
+    }
+    console.log('Message sent: ' + info.response);
+//}); */
 
 // Initialization
 
-let consoleTestMessage = `#beckurbancanvas Design Challenge with ${email}.`
+//let consoleTestMessage = `#beckurbancanvas Design Challenge with ${email}.`
 // debug
-console.log(consoleTestMessage);
+//console.log(consoleTestMessage);
 
 // debug
 let workingPath = `${currentUserWindows}${tiltBrushDirectory}`;
 // console.log(workingPath)
 let backupPath = `${currentUserWindows}${backupDirectory}`;
-let backupPathUser = `${backupPath}\\${argv.n}`;
+let backupPathUser = `${backupPath}\\${argv.n}`+'_'+'${argv.e}';
 
 fse.ensureDir(backupPathUser, (err) => {
   if (err != null) return;
   console.log("creating user directory") // => null
   // dir has now been created, including the directory it is to be placed in
 })
-// console.log(backupPathUser);
+console.log(backupPathUser);
 
 // console.log("Reading missles");
-
-let testImage = 'test.png';
-
-// crop image
-easyimg.rescrop({
-     src: testImage, dst: 'testEdited.png',
-     width:1920, height:1080,
-     cropwidth:800, cropheight:800,
-     x:0, y:0
-  }).then(
-  function(image) {
-     console.log('Resized and cropped: ' + image.width + ' x ' + image.height);
-  },
-  function (err) {
-    console.log(err);
-  }
-);
-
-//watermark image
-
-gm('testEdited.png')
- .draw(['image Over 0,700,0,0 "watermark.png"'])
- .write('testEditedWM.png', function(e){
-   console.log(e||'done'); // What would you like to do here?
-});
-
 
 watch.createMonitor(workingPath, (monitor) =>
     monitor.on("created", (filePath, stat) => {
@@ -171,7 +169,7 @@ watch.createMonitor(workingPath, (monitor) =>
 
       // crop image
       easyimg.rescrop({
-           src: filePath, dst: 'testEdited.png',
+           src: backupLocation, dst: filePath + 'Edited.png',
            width:1920, height:1080,
            cropwidth:800, cropheight:800,
            x:0, y:0
@@ -194,4 +192,4 @@ watch.createMonitor(workingPath, (monitor) =>
 
 
 
-    //}));
+    }));
