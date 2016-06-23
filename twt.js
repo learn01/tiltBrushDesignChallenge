@@ -12,27 +12,39 @@ const nodemailer = require('nodemailer');
 
 
 // create reusable transporter object using the default SMTP transport
-//const transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+const transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
 
-const wordList =
-  ["Colada",
-   "Palm Tree",
-   "Traffic",
-   "Croqueta",
-   "Hurricane",
-   "Panther",
-   "Dolphin",
-   "Manitee",
-   "Flamingo",
-   "Ice Cream",
-   "Seaweed",
-   "Mahi-mahi",
-   "Boat",
-   "Mango",
-   "305",
-   "Party",
-   "Coconut",
-   "Congas"];
+const express = require('express');
+const app = express();
+
+//app viewed at localhost:8080
+
+app.get('/', function(res,req){
+  res.sendFile(path.join('/index.html'));
+});
+
+app.listen(8080);
+
+
+//const wordList =
+//    ["Colada",
+//   "Palm Tree",
+//   "Traffic",
+//   "Croqueta",
+//   "Hurricane",
+//   "Panther",
+//   "Dolphin",
+//   "Manitee",
+//   "Flamingo",
+//   "Ice Cream",
+//   "Seaweed",
+//   "Mahi-mahi",
+//   "Boat",
+//   "Mango",
+//   "305",
+//   "Party",
+//   "Coconut",
+//   "Congas"];
 
 //let randomizedList = chance.pickset(wordList, 3)
 //let [firstWord, secondWord, thirdWord] = randomizedList;
@@ -61,15 +73,15 @@ let email = argv.e;
 // console.log(argv)
 
 // setup e-mail data with unicode symbols
-//var mailOptions = {
-//    from: '"Fred Foo 👥" <foo@blurdybloop.com>', // sender address
-//    to: email , // list of receivers
-//    subject: '#BecksUrbanCanvas✔', // Subject line
-//    html: '<b>Hello world 🐴</b>' // html body
+var mailOptions = {
+    from: '"Tilt Brush @ Becks Urban Canvas" <becksurbancanvasvr@gmail.com>', // sender address
+    to: email , // list of receivers
+    subject: 'Share Your #BecksUrbanCanvas', // Subject line
+    html: mail.html // html body
 //};
 
 // send mail with defined transport object
-//transporter.sendMail(mailOptions, function(error, info){
+transporter.sendMail(mailOptions, function(error, info){
 //    if(error){
 //        return console.log(error);
 //    }
@@ -159,7 +171,7 @@ watch.createMonitor(workingPath, (monitor) =>
 
       // crop image
       easyimg.rescrop({
-           src: testImage, dst: 'testEdited.png',
+           src: filePath, dst: 'testEdited.png',
            width:1920, height:1080,
            cropwidth:800, cropheight:800,
            x:0, y:0
